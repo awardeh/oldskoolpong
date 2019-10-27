@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="oldskoolpong:jar">
+    <output-path>$PROJECT_DIR$/test/artifacts/oldskoolpong_jar</output-path>
+    <root id="archive" name="oldskoolpong.jar">
+      <element id="module-output" name="oldskoolpong" />
+    </root>
+  </artifact>
+</component>
