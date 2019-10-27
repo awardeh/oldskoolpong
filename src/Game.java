@@ -1,5 +1,3 @@
-
-
 import java.awt.*;
 import java.awt.event.*;
 import java.io.FileInputStream;
@@ -8,8 +6,8 @@ import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
-//import sun.audio.AudioPlayer;
-//import sun.audio.AudioStream;
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
 
 public class Game extends JPanel implements ActionListener, KeyListener {
 
@@ -65,11 +63,11 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 
         if (y >= getHeight() - 10 || y <= 0) {
             ya = -ya;
-//            try {
-//                playSound();
-//            } catch (IOException ex) {
-//                Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
-//            }
+            try {
+                playSound();
+            } catch (IOException ex) {
+                Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         if (rBall.intersects(rPaddle1) || rBall.intersects(rPaddle2)) {
             if (yPaddle1 == y + 6 || yPaddle1 + 24 == y || yPaddle2 == y + 6 || yPaddle2 + 24 == y) {
@@ -77,12 +75,12 @@ public class Game extends JPanel implements ActionListener, KeyListener {
                 ya = -ya;
             }
             xa = -xa;
-//            try {
-//                playSound();
-//            } catch (IOException ex) {
-//                System.out.println("nope");
-//                Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
-//            }
+            try {
+                playSound();
+            } catch (IOException ex) {
+                System.out.println("nope");
+                Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
         g.fillOval(x - 5, y, 10, 10);
@@ -111,12 +109,12 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         repaint();
     }
 
-//    private void playSound() throws IOException {
-//
-//        InputStream in = new FileInputStream("sound.wav");
-//        AudioStream as = new AudioStream(in);
-//        AudioPlayer.player.start(as);
-//    }
+    private void playSound() throws IOException {
+
+        InputStream in = new FileInputStream("sound.wav");
+        AudioStream as = new AudioStream(in);
+        AudioPlayer.player.start(as);
+    }
 
     void drawPaddle() {
         rPaddle1 = new Rectangle(xPaddle1, yPaddle1, 5, 30);
