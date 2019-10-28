@@ -4,6 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import javax.sound.sampled.*;
 import javax.swing.*;
+//TO DO
+//        make size soft coded
+//        make paddles non flickering
+//        make it paddles more accurate
 
 public class Game extends JPanel implements ActionListener, KeyListener {
     private final static int MIN_HEIGHT = 450;
