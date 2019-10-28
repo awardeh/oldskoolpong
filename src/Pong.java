@@ -10,6 +10,7 @@ public class Pong extends JFrame {
         getContentPane().add(b);
         b.setFocusable(true);
         add(b);
+        System.out.println(b.getHeight());
     }
 
     public static void main(String[] args) throws UnsupportedAudioFileException, IOException, LineUnavailableException {

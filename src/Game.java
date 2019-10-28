@@ -6,18 +6,23 @@ import javax.sound.sampled.*;
 import javax.swing.*;
 
 public class Game extends JPanel implements ActionListener, KeyListener {
+    private final static int MIN_HEIGHT = 450;
+    private final static int MAX_WIDTH = 700;
+    private final static int MIN_WIDTH = 0;
+    private final static int MAX_HEIGHT = 50;
+    private final static int PADDLE_HEIGHT = 40;
 
     private int x = 350;
     private int y = 250;
-    int xa = 1;
-    int ya = 1;
+    int xBall = 1;
+    int yBall = 1;
     private int xPaddle1, xPaddle2, yPaddle1, yPaddle2;
     private Rectangle rPaddle1, rPaddle2, rBall;
     Timer t;
     private Scorecard score;
     int paddleSpeed;
     private boolean[] keyArray = new boolean[5];
-    private boolean gameOver = false;
+    private boolean gameOver = true;
 
     Game() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         GameSpeed gs = new GameSpeed(this);
@@ -25,7 +30,7 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         int delay = 15;
         t = new Timer(delay, this);
         t.start();
-        xPaddle1 = 20;
+        xPaddle1 = 30;
         yPaddle1 = 250;
         xPaddle2 = 670;
         yPaddle2 = 250;
@@ -37,28 +42,24 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 
 
     private void drawPaddle() {
-        rPaddle1 = new Rectangle(xPaddle1, yPaddle1, 10, 30);
-        rPaddle2 = new Rectangle(xPaddle2, yPaddle2, 10, 30);
+        rPaddle1 = new Rectangle(xPaddle1, yPaddle1, 10, PADDLE_HEIGHT);
+        rPaddle2 = new Rectangle(xPaddle2, yPaddle2, 10, PADDLE_HEIGHT);
         rBall = new Rectangle(x, y, 10, 10);
         if (keyArray[0]) {
-            if (checkP1()) {
+            if(checkP1D())
                 yPaddle1 += paddleSpeed;
-            }
         }
         if (keyArray[1]) {
-            if (checkP1()) {
+            if (checkP1U())
                 yPaddle1 -= paddleSpeed;
-            }
         }
         if (keyArray[2]) {
-            if (checkP2()) {
-                yPaddle2 -= paddleSpeed;
-            }
+            if (checkP2D())
+                yPaddle2 += paddleSpeed;
         }
         if (keyArray[3]) {
-            if (checkP2()) {
-                yPaddle2 += paddleSpeed;
-            }
+            if (checkP2U())
+                yPaddle2 -= paddleSpeed;
         }
         if (score.sc1 >= 10 || score.sc2 >= 10) {
             if (keyArray[4]) {
@@ -67,6 +68,7 @@ public class Game extends JPanel implements ActionListener, KeyListener {
                 score.sc2 = 0;
             }
         }
+
     }
 
 
@@ -78,22 +80,22 @@ public class Game extends JPanel implements ActionListener, KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            if (checkP2()) {
+            if (checkP1D()) {
                 keyArray[0] = true;
             }
         }
         if (e.getKeyCode() == KeyEvent.VK_UP) {
-            if (checkP1()) {
+            if (checkP1U()) {
                 keyArray[1] = true;
             }
         }
-        if (e.getKeyCode() == KeyEvent.VK_W) {
-            if (checkP2()) {
+        if (e.getKeyCode() == KeyEvent.VK_S) {
+            if (checkP2D()) {
                 keyArray[2] = true;
             }
         }
-        if (e.getKeyCode() == KeyEvent.VK_S) {
-            if (checkP2()) {
+        if (e.getKeyCode() == KeyEvent.VK_W) {
+            if (checkP2U()) {
                 keyArray[3] = true;
             }
         }
@@ -110,33 +112,46 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         if (e.getKeyCode() == KeyEvent.VK_UP) {
             keyArray[1] = false;
         }
-        if (e.getKeyCode() == KeyEvent.VK_W) {
+        if (e.getKeyCode() == KeyEvent.VK_S) {
             keyArray[2] = false;
         }
-        if (e.getKeyCode() == KeyEvent.VK_S) {
+        if (e.getKeyCode() == KeyEvent.VK_W) {
             keyArray[3] = false;
         }
     }
 
 
-    private boolean checkP1() {
-        if (yPaddle1 >= getHeight() - 20) {
-            yPaddle1 = getHeight() - 20;
+    private boolean checkP1U() {
+        if (yPaddle1 < MAX_HEIGHT) {
+            yPaddle1 = MAX_HEIGHT + PADDLE_HEIGHT + 55;
             return false;
-        } else if (yPaddle1 <= -10) {
-            yPaddle1 = 40;
-            return false;
-        } else return true;
+        }
+        return true;
     }
 
-    private boolean checkP2() {
-        if (yPaddle2 >= getHeight()) {
-            yPaddle2 = getHeight() - 20;
+
+    private boolean checkP1D() {
+        if (yPaddle1 >= MIN_HEIGHT) {
+            yPaddle1 = MIN_HEIGHT - PADDLE_HEIGHT - 15;
             return false;
-        } else if (yPaddle2 <= -10) {
-            yPaddle2 = 40;
+        }
+        return true;
+    }
+
+    private boolean checkP2U() {
+        if (yPaddle2 <= MAX_HEIGHT) {
+            yPaddle2 = MAX_HEIGHT + PADDLE_HEIGHT + 55;
             return false;
-        } else return true;
+        }
+        return true;
+    }
+
+    private boolean checkP2D() {
+        if (yPaddle2 >= MIN_HEIGHT) {
+            yPaddle2 = MIN_HEIGHT - PADDLE_HEIGHT - 15;
+            return false;
+        }
+        return true;
     }
 
 
@@ -157,25 +172,25 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         g.setFont(new Font("Comic Sans", Font.BOLD, 20));
         g.setColor(Color.red);
 
-        x += xa;
-        y += ya;
+        x += xBall;
+        y += yBall;
         drawPaddle();
 
-        if (x >= getWidth() - 10) {
+        if (x >= MAX_WIDTH - 30) {
             x = 350;
             y = 250;
-            xa = -xa;
+            xBall = -xBall;
             score.increaseScore('1');
         }
-        if (x <= 10) {
+        if (x <= MIN_WIDTH + 30) {
             x = 350;
             y = 250;
-            xa = -xa;
+            xBall = -xBall;
             score.increaseScore('2');
         }
 
-        if (y >= getHeight() - 50 || y <= 50) {
-            ya = -ya;
+        if (y >= MIN_HEIGHT || y <= MAX_HEIGHT) {
+            yBall = -yBall;
             try {
                 playSound();
             } catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
@@ -184,8 +199,8 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 
         }
         if (rBall.intersects(rPaddle1) || rBall.intersects(rPaddle2)) {
-            xa = -ya;
-            ya = -ya;
+            xBall = -xBall;
+            yBall = -yBall;
             try {
                 playSound();
             } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
@@ -194,13 +209,17 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         }
 
         g.fillOval(x - 5, y, 10, 10);
-        g.fillRect(xPaddle1, yPaddle1, 5, 30);
-        g.fillRect(xPaddle2, yPaddle2, 5, 30);
+        g.fillRect(xPaddle1, yPaddle1, 10, PADDLE_HEIGHT);
+        g.fillRect(xPaddle2, yPaddle2, 10, PADDLE_HEIGHT);
         g.setColor(Color.CYAN);
         g.drawString(Integer.toString(score.sc1), 50, 30);
         g.drawString(Integer.toString(score.sc2), 650, 30);
         g.setColor(Color.WHITE);
-        g.drawLine(350, 0, 350, 500);
+        g.drawLine(MAX_WIDTH / 2, MAX_HEIGHT, MAX_WIDTH / 2, MIN_HEIGHT);
+        g.drawLine(MIN_WIDTH, MIN_HEIGHT, MAX_WIDTH, MIN_HEIGHT);
+        g.drawLine(MIN_WIDTH, MAX_HEIGHT, MAX_WIDTH, MAX_HEIGHT);
+
+
         this.setBackground(Color.BLACK);
 
         if (score.sc1 >= 10) {
@@ -228,6 +247,7 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         clip.start();
 
     }
+
     private void backgroundSong() throws LineUnavailableException, IOException, UnsupportedAudioFileException {
         AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File("nokia.wav").getAbsoluteFile());
         Clip clip = AudioSystem.getClip();

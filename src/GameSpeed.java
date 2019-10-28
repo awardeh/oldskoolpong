@@ -98,26 +98,26 @@ public class GameSpeed extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jrbEasyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrbEasyActionPerformed
-        game.paddleSpeed = 10;
+        game.paddleSpeed = 7;
         //game.delay = 10;
         game.t.start();
         this.dispose();
     }//GEN-LAST:event_jrbEasyActionPerformed
 
     private void jrbMediumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrbMediumActionPerformed
-        game.paddleSpeed = 10;
+        game.paddleSpeed = 7;
         //game.delay = 7;
-        game.xa = 3;
-        game.ya = 3;
+        game.xBall = 3;
+        game.yBall = 3;
         game.t.start();
         this.dispose();
     }//GEN-LAST:event_jrbMediumActionPerformed
 
     private void jrbHardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrbHardActionPerformed
-        game.paddleSpeed = 18;
+        game.paddleSpeed = 8;
         //game.delay = 4;
-        game.xa = 4;
-        game.ya = 4;
+        game.xBall = 4;
+        game.yBall = 4;
         game.t.start();
         this.dispose();
     }//GEN-LAST:event_jrbHardActionPerformed
