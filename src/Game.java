@@ -176,13 +176,13 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         y += yBall;
         drawPaddle();
 
-        if (x >= MAX_WIDTH - 30) {
+        if (x >= MAX_WIDTH - 35) {
             x = 350;
             y = 250;
             xBall = -xBall;
             score.increaseScore('1');
         }
-        if (x <= MIN_WIDTH + 30) {
+        if (x <= MIN_WIDTH + 35) {
             x = 350;
             y = 250;
             xBall = -xBall;
