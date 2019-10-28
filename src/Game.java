@@ -1,41 +1,30 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
-import java.math.*;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sound.sampled.*;
 import javax.swing.*;
-//import sun.audio.AudioPlayer;
-//import sun.audio.AudioStream;
 
 public class Game extends JPanel implements ActionListener, KeyListener {
 
-    int x = 350;
-    int y = 250;
+    private int x = 350;
+    private int y = 250;
     int xa = 1;
     int ya = 1;
-    int xPaddle1, xPaddle2, yPaddle1, yPaddle2;
-    Rectangle rPaddle1, rPaddle2, rBall;
+    private int xPaddle1, xPaddle2, yPaddle1, yPaddle2;
+    private Rectangle rPaddle1, rPaddle2, rBall;
     Timer t;
-    Scorecard score;
+    private Scorecard score;
     int paddleSpeed;
-    GameSpeed gs;
-    int delay = 15;
-    boolean[] keyArray = new boolean[5];
-    boolean gameOver = false;
-    Clip clip;
+    private boolean[] keyArray = new boolean[5];
+    private boolean gameOver = false;
 
-    public Game() throws IOException, LineUnavailableException, UnsupportedAudioFileException {
-        gs = new GameSpeed(this);
+    Game() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        GameSpeed gs = new GameSpeed(this);
         gs.setVisible(true);
-
+        int delay = 15;
         t = new Timer(delay, this);
-        //t.start();
+        t.start();
         xPaddle1 = 20;
         yPaddle1 = 250;
         xPaddle2 = 670;
@@ -43,16 +32,13 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         addKeyListener(this);
         score = new Scorecard();
         paddleSpeed = 5;
-        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("/home/aaa/sound.wav").getAbsoluteFile());
-        clip = AudioSystem.getClip();
-        clip.open(audioInputStream);
+        backgroundSong();
     }
 
 
-
     private void drawPaddle() {
-        rPaddle1 = new Rectangle(xPaddle1, yPaddle1, 5, 30);
-        rPaddle2 = new Rectangle(xPaddle2, yPaddle2, 5, 30);
+        rPaddle1 = new Rectangle(xPaddle1, yPaddle1, 10, 30);
+        rPaddle2 = new Rectangle(xPaddle2, yPaddle2, 10, 30);
         rBall = new Rectangle(x, y, 10, 10);
         if (keyArray[0]) {
             if (checkP1()) {
@@ -133,28 +119,28 @@ public class Game extends JPanel implements ActionListener, KeyListener {
     }
 
 
-    boolean checkP1() {
-        if (yPaddle1 >= getHeight()) {
-            yPaddle1 = getHeight() - 40;
+    private boolean checkP1() {
+        if (yPaddle1 >= getHeight() - 20) {
+            yPaddle1 = getHeight() - 20;
             return false;
-        } else if (yPaddle1 <= 5) {
+        } else if (yPaddle1 <= -10) {
             yPaddle1 = 40;
             return false;
         } else return true;
     }
 
-    boolean checkP2() {
+    private boolean checkP2() {
         if (yPaddle2 >= getHeight()) {
-            yPaddle2 = getHeight() - 40;
+            yPaddle2 = getHeight() - 20;
             return false;
-        } else if (yPaddle2 <= 5) {
+        } else if (yPaddle2 <= -10) {
             yPaddle2 = 40;
             return false;
         } else return true;
     }
 
 
-    void restartGame() {
+    private void restartGame() {
         if (gameOver) {
             gameOver = false;
             t.start();
@@ -175,29 +161,36 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         y += ya;
         drawPaddle();
 
-        if (x >= 680) {
+        if (x >= getWidth() - 10) {
             x = 350;
             y = 250;
             xa = -xa;
             score.increaseScore('1');
         }
-        if (x <= 0) {
+        if (x <= 10) {
             x = 350;
             y = 250;
             xa = -xa;
             score.increaseScore('2');
         }
 
-        if (y >= getHeight() - 10 || y == -10) {
+        if (y >= getHeight() - 50 || y <= 50) {
             ya = -ya;
-            playSound();
+            try {
+                playSound();
+            } catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+                e.printStackTrace();
+            }
+
         }
         if (rBall.intersects(rPaddle1) || rBall.intersects(rPaddle2)) {
-            if (yPaddle1 == y + 6 || yPaddle1 + 24 == y || yPaddle2 == y + 6 || yPaddle2 + 24 == y) {
-                xa = -xa;
-            }
+            xa = -ya;
             ya = -ya;
-            playSound();
+            try {
+                playSound();
+            } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
+                e.printStackTrace();
+            }
         }
 
         g.fillOval(x - 5, y, 10, 10);
@@ -227,7 +220,18 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         repaint();
     }
 
-    void playSound() {
-        this.clip.start();
+    private void playSound() throws LineUnavailableException, IOException, UnsupportedAudioFileException {
+        Clip clip;
+        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("sound.wav").getAbsoluteFile());
+        clip = AudioSystem.getClip();
+        clip.open(audioInputStream);
+        clip.start();
+
+    }
+    private void backgroundSong() throws LineUnavailableException, IOException, UnsupportedAudioFileException {
+        AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File("nokia.wav").getAbsoluteFile());
+        Clip clip = AudioSystem.getClip();
+        clip.open(inputStream);
+        clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
 }

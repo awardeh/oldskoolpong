@@ -5,7 +5,7 @@
  */
 
 /**
- * @author HPPC
+ * @author HPPC & slep
  */
 public class GameSpeed extends javax.swing.JFrame {
 
