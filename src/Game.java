@@ -1,10 +1,14 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.math.*;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.sound.sampled.*;
 import javax.swing.*;
 //import sun.audio.AudioPlayer;
 //import sun.audio.AudioStream;
@@ -22,8 +26,11 @@ public class Game extends JPanel implements ActionListener, KeyListener {
     int paddleSpeed;
     GameSpeed gs;
     int delay = 15;
+    boolean[] keyArray = new boolean[5];
+    boolean gameOver = false;
+    Clip clip;
 
-    public Game() {
+    public Game() throws IOException, LineUnavailableException, UnsupportedAudioFileException {
         gs = new GameSpeed(this);
         gs.setVisible(true);
 
@@ -36,7 +43,127 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         addKeyListener(this);
         score = new Scorecard();
         paddleSpeed = 5;
+        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("/home/aaa/sound.wav").getAbsoluteFile());
+        clip = AudioSystem.getClip();
+        clip.open(audioInputStream);
     }
+
+
+
+    private void drawPaddle() {
+        rPaddle1 = new Rectangle(xPaddle1, yPaddle1, 5, 30);
+        rPaddle2 = new Rectangle(xPaddle2, yPaddle2, 5, 30);
+        rBall = new Rectangle(x, y, 10, 10);
+        if (keyArray[0]) {
+            if (checkP1()) {
+                yPaddle1 += paddleSpeed;
+            }
+        }
+        if (keyArray[1]) {
+            if (checkP1()) {
+                yPaddle1 -= paddleSpeed;
+            }
+        }
+        if (keyArray[2]) {
+            if (checkP2()) {
+                yPaddle2 -= paddleSpeed;
+            }
+        }
+        if (keyArray[3]) {
+            if (checkP2()) {
+                yPaddle2 += paddleSpeed;
+            }
+        }
+        if (score.sc1 >= 10 || score.sc2 >= 10) {
+            if (keyArray[4]) {
+                t.start();
+                score.sc1 = 0;
+                score.sc2 = 0;
+            }
+        }
+    }
+
+
+    @Override
+    public void keyTyped(KeyEvent keyEvent) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            if (checkP2()) {
+                keyArray[0] = true;
+            }
+        }
+        if (e.getKeyCode() == KeyEvent.VK_UP) {
+            if (checkP1()) {
+                keyArray[1] = true;
+            }
+        }
+        if (e.getKeyCode() == KeyEvent.VK_W) {
+            if (checkP2()) {
+                keyArray[2] = true;
+            }
+        }
+        if (e.getKeyCode() == KeyEvent.VK_S) {
+            if (checkP2()) {
+                keyArray[3] = true;
+            }
+        }
+        if (e.getKeyCode() == KeyEvent.VK_R) {
+            restartGame();
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            keyArray[0] = false;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_UP) {
+            keyArray[1] = false;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_W) {
+            keyArray[2] = false;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_S) {
+            keyArray[3] = false;
+        }
+    }
+
+
+    boolean checkP1() {
+        if (yPaddle1 >= getHeight()) {
+            yPaddle1 = getHeight() - 40;
+            return false;
+        } else if (yPaddle1 <= 5) {
+            yPaddle1 = 40;
+            return false;
+        } else return true;
+    }
+
+    boolean checkP2() {
+        if (yPaddle2 >= getHeight()) {
+            yPaddle2 = getHeight() - 40;
+            return false;
+        } else if (yPaddle2 <= 5) {
+            yPaddle2 = 40;
+            return false;
+        } else return true;
+    }
+
+
+    void restartGame() {
+        if (gameOver) {
+            gameOver = false;
+            t.start();
+            score.sc1 = 0;
+            score.sc2 = 0;
+        }
+
+    }
+
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -48,7 +175,7 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         y += ya;
         drawPaddle();
 
-        if (x >= 690) {
+        if (x >= 680) {
             x = 350;
             y = 250;
             xa = -xa;
@@ -61,26 +188,16 @@ public class Game extends JPanel implements ActionListener, KeyListener {
             score.increaseScore('2');
         }
 
-        if (y >= getHeight() - 10 || y <= 0) {
+        if (y >= getHeight() - 10 || y == -10) {
             ya = -ya;
-//            try {
-//                playSound();
-//            } catch (IOException ex) {
-//                Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
-//            }
+            playSound();
         }
         if (rBall.intersects(rPaddle1) || rBall.intersects(rPaddle2)) {
             if (yPaddle1 == y + 6 || yPaddle1 + 24 == y || yPaddle2 == y + 6 || yPaddle2 + 24 == y) {
-                //xa = -xa;
-                ya = -ya;
+                xa = -xa;
             }
-            xa = -xa;
-//            try {
-//                playSound();
-//            } catch (IOException ex) {
-//                System.out.println("nope");
-//                Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
-//            }
+            ya = -ya;
+            playSound();
         }
 
         g.fillOval(x - 5, y, 10, 10);
@@ -104,77 +221,13 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         }
     }
 
+
     @Override
     public void actionPerformed(ActionEvent e) {
         repaint();
     }
 
-//    private void playSound() throws IOException {
-//
-//        InputStream in = new FileInputStream("sound.wav");
-//        AudioStream as = new AudioStream(in);
-//        AudioPlayer.player.start(as);
-//    }
-
-    void drawPaddle() {
-        rPaddle1 = new Rectangle(xPaddle1, yPaddle1, 5, 30);
-        rPaddle2 = new Rectangle(xPaddle2, yPaddle2, 5, 30);
-        rBall = new Rectangle(x, y, 10, 10);
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            if (check()) {
-                yPaddle2 += paddleSpeed;
-            }
-        }
-        if (e.getKeyCode() == KeyEvent.VK_UP) {
-            if (check()) {
-                yPaddle2 -= paddleSpeed;
-            }
-        }
-        if (e.getKeyCode() == KeyEvent.VK_W) {
-            if (check()) {
-                yPaddle1 -= paddleSpeed;
-            }
-        }
-        if (e.getKeyCode() == KeyEvent.VK_S) {
-            if (check()) {
-                yPaddle1 += paddleSpeed;
-            }
-        }
-        if (score.sc1 >= 10 || score.sc2 >= 10) {
-            if (e.getKeyCode() == KeyEvent.VK_R) {
-                t.start();
-                score.sc1 = 0;
-                score.sc2 = 0;
-            }
-        }
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-    }
-
-    boolean check() {
-        if (yPaddle1 + 37 >= getHeight()) {
-            yPaddle1 = yPaddle1 - 2;
-            return false;
-        } else if (yPaddle1 <= 5) {
-            yPaddle1 = yPaddle1 + 2;
-            return false;
-        } else if (yPaddle2 + 37 >= getHeight()) {
-            yPaddle2 = yPaddle2 - 2;
-            return false;
-        } else if (yPaddle2 <= 5) {
-            yPaddle2 = yPaddle2 + 2;
-            return false;
-        }
-        return true;
+    void playSound() {
+        this.clip.start();
     }
 }

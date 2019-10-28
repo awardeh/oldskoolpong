@@ -5,20 +5,19 @@
  */
 
 /**
- *
  * @author HPPC
  */
 public class GameSpeed extends javax.swing.JFrame {
-    
+
     Game game;
-    
+
     /**
      * Creates new form GameSpeed
      */
     public GameSpeed(Game g) {
         initComponents();
         game = g;
-        
+
     }
 
     /**
@@ -71,42 +70,42 @@ public class GameSpeed extends javax.swing.JFrame {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(147, 147, 147)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jrbEasy, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jrbMedium, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jrbHard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(154, Short.MAX_VALUE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(147, 147, 147)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jrbEasy, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jrbMedium, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jrbHard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap(154, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addComponent(jLabel1)
-                .addGap(47, 47, 47)
-                .addComponent(jrbEasy)
-                .addGap(36, 36, 36)
-                .addComponent(jrbMedium)
-                .addGap(36, 36, 36)
-                .addComponent(jrbHard)
-                .addContainerGap(67, Short.MAX_VALUE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(31, 31, 31)
+                                .addComponent(jLabel1)
+                                .addGap(47, 47, 47)
+                                .addComponent(jrbEasy)
+                                .addGap(36, 36, 36)
+                                .addComponent(jrbMedium)
+                                .addGap(36, 36, 36)
+                                .addComponent(jrbHard)
+                                .addContainerGap(67, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jrbEasyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrbEasyActionPerformed
-        game.paddleSpeed = 5;
+        game.paddleSpeed = 10;
         //game.delay = 10;
         game.t.start();
         this.dispose();
     }//GEN-LAST:event_jrbEasyActionPerformed
 
     private void jrbMediumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrbMediumActionPerformed
-        game.paddleSpeed =10;
+        game.paddleSpeed = 10;
         //game.delay = 7;
         game.xa = 3;
         game.ya = 3;
@@ -115,7 +114,7 @@ public class GameSpeed extends javax.swing.JFrame {
     }//GEN-LAST:event_jrbMediumActionPerformed
 
     private void jrbHardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrbHardActionPerformed
-        game.paddleSpeed =18;
+        game.paddleSpeed = 18;
         //game.delay = 4;
         game.xa = 4;
         game.ya = 4;
