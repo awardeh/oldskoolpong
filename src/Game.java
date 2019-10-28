@@ -29,7 +29,8 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         gs.setVisible(true);
         int delay = 15;
         t = new Timer(delay, this);
-        t.start();
+        if(!gameOver)
+            t.start();
         xPaddle1 = 30;
         yPaddle1 = 250;
         xPaddle2 = 670;
@@ -189,7 +190,7 @@ public class Game extends JPanel implements ActionListener, KeyListener {
             score.increaseScore('2');
         }
 
-        if (y >= MIN_HEIGHT || y <= MAX_HEIGHT) {
+        if (y >= MIN_HEIGHT - 5 || y <= MAX_HEIGHT + 3) {
             yBall = -yBall;
             try {
                 playSound();
