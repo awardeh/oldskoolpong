@@ -242,6 +242,7 @@ public class Game extends JPanel implements ActionListener, KeyListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         repaint();
+        Toolkit.getDefaultToolkit().sync();
     }
 
     private void playSound() throws LineUnavailableException, IOException, UnsupportedAudioFileException {
