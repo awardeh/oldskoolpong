@@ -127,8 +127,8 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 
 
     private boolean checkP1U() {
-        if (yPaddle1 < MAX_HEIGHT) {
-            yPaddle1 = MAX_HEIGHT + PADDLE_HEIGHT + 55;
+        if (yPaddle1 <= MAX_HEIGHT) {
+            yPaddle1 = MAX_HEIGHT;
             return false;
         }
         return true;
@@ -136,8 +136,8 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 
 
     private boolean checkP1D() {
-        if (yPaddle1 >= MIN_HEIGHT) {
-            yPaddle1 = MIN_HEIGHT - PADDLE_HEIGHT - 15;
+        if (yPaddle1 >= MIN_HEIGHT- PADDLE_HEIGHT) {
+            yPaddle1 = MIN_HEIGHT - PADDLE_HEIGHT;
             return false;
         }
         return true;
@@ -145,15 +145,15 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 
     private boolean checkP2U() {
         if (yPaddle2 <= MAX_HEIGHT) {
-            yPaddle2 = MAX_HEIGHT + PADDLE_HEIGHT + 55;
+            yPaddle2 = MAX_HEIGHT;
             return false;
         }
         return true;
     }
 
     private boolean checkP2D() {
-        if (yPaddle2 >= MIN_HEIGHT) {
-            yPaddle2 = MIN_HEIGHT - PADDLE_HEIGHT - 15;
+        if (yPaddle2 >= MIN_HEIGHT - PADDLE_HEIGHT) {
+            yPaddle2 = MIN_HEIGHT - PADDLE_HEIGHT;
             return false;
         }
         return true;
