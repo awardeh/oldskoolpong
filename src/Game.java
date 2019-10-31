@@ -42,6 +42,7 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         addKeyListener(this);
         score = new Scorecard();
         paddleSpeed = 5;
+        String sound = ".//res/sound.wav";
         backgroundSong();
     }
 
@@ -246,16 +247,17 @@ public class Game extends JPanel implements ActionListener, KeyListener {
     }
 
     private void playSound() throws LineUnavailableException, IOException, UnsupportedAudioFileException {
-        Clip clip;
-        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("sound.wav").getAbsoluteFile());
-        clip = AudioSystem.getClip();
-        clip.open(audioInputStream);
+        String song = ".//res/sound.wav";
+        AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File(song));
+        Clip clip = AudioSystem.getClip();
+        clip.open(inputStream);
+        clip.setFramePosition(0);
         clip.start();
-
     }
 
     private void backgroundSong() throws LineUnavailableException, IOException, UnsupportedAudioFileException {
-        AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File("nokia.wav").getAbsoluteFile());
+        String song = ".//res/nokia.wav";
+        AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File(song));
         Clip clip = AudioSystem.getClip();
         clip.open(inputStream);
         clip.loop(Clip.LOOP_CONTINUOUSLY);
