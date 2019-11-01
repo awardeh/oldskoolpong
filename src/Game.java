@@ -30,9 +30,10 @@ public class Game extends JPanel implements ActionListener, KeyListener {
     int paddleSpeed;
     private boolean[] keyArray = new boolean[5];
     private boolean gameOver = true;
+    GameSpeed gs;
 
     Game() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-        GameSpeed gs = new GameSpeed(this);
+        gs = new GameSpeed(this);
         gs.setVisible(true);
         int delay = 15;
         t = new Timer(delay, this);
@@ -76,7 +77,6 @@ public class Game extends JPanel implements ActionListener, KeyListener {
                 score.sc2 = 0;
             }
         }
-
     }
 
 
@@ -108,7 +108,9 @@ public class Game extends JPanel implements ActionListener, KeyListener {
             }
         }
         if (e.getKeyCode() == KeyEvent.VK_R) {
-            restartGame();
+            if(!gs.isVisible()){
+                restartGame();
+            }
         }
     }
 
