@@ -1,5 +1,5 @@
 # oldskoolpong
-A frankenstein monster of a pong game (incomplete game from 2017, updated in late 2019) 
+A pong game (incomplete game from 2017, updated in late 2019) 
 Originally by Shafaat Khan
 updated by Shafaat Khan and Alaa Wardeh
 
