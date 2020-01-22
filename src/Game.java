@@ -15,7 +15,7 @@ public class Game extends JPanel implements ActionListener, KeyListener {
     private final static int MIN_WIDTH = 0;
     private final static int MAX_HEIGHT = 50;
     private final static int PADDLE_HEIGHT = 40;
-    private final static String SONG = ".//res/nokia.wav";
+//    private final static String SONG = ".//res/nokia.wav";
     private final static String SOUND = ".//res/sound.wav";
 
 
@@ -32,7 +32,7 @@ public class Game extends JPanel implements ActionListener, KeyListener {
     private boolean gameOver = true;
     GameSpeed gs;
 
-    Game() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+    Game() {
         gs = new GameSpeed(this);
         gs.setVisible(true);
         int delay = 15;
@@ -46,7 +46,7 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         addKeyListener(this);
         score = new Scorecard();
         paddleSpeed = 5;
-        backgroundSong();
+//        backgroundSong();
     }
 
 
@@ -258,10 +258,10 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         clip.start();
     }
 
-    private void backgroundSong() throws LineUnavailableException, IOException, UnsupportedAudioFileException {
-        AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File(SONG));
-        Clip clip = AudioSystem.getClip();
-        clip.open(inputStream);
-        clip.loop(Clip.LOOP_CONTINUOUSLY);
-    }
+//    private void backgroundSong() throws LineUnavailableException, IOException, UnsupportedAudioFileException {
+//        AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File(SONG));
+//        Clip clip = AudioSystem.getClip();
+//        clip.open(inputStream);
+//        clip.loop(Clip.LOOP_CONTINUOUSLY);
+//    }
 }
