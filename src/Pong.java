@@ -1,11 +1,8 @@
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
-import java.io.IOException;
 
 public class Pong extends JFrame {
 
-    public Pong() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+    public Pong() {
         Game b = new Game();
         getContentPane().add(b);
         b.setFocusable(true);
@@ -13,7 +10,7 @@ public class Pong extends JFrame {
         System.out.println(b.getHeight());
     }
 
-    public static void main(String[] args) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+    public static void main(String[] args) {
         Pong p = new Pong();
         p.setResizable(false);
         p.setVisible(true);

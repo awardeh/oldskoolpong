@@ -1,9 +1,12 @@
-import java.awt.*;
-import java.awt.event.*;
-import java.io.File;
-import java.io.IOException;
 import javax.sound.sampled.*;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.File;
+import java.io.IOException;
 //TO DO
 //        make size soft coded
 //        make paddles non flickering
@@ -15,22 +18,20 @@ public class Game extends JPanel implements ActionListener, KeyListener {
     private final static int MIN_WIDTH = 0;
     private final static int MAX_HEIGHT = 50;
     private final static int PADDLE_HEIGHT = 40;
-//    private final static String SONG = ".//res/nokia.wav";
+    //    private final static String SONG = ".//res/nokia.wav";
     private final static String SOUND = ".//res/sound.wav";
-
-
-    private int x = 350;
-    private int y = 250;
     int xBall = 1;
     int yBall = 1;
+    Timer t;
+    int paddleSpeed;
+    GameSpeed gs;
+    private int x = 350;
+    private int y = 250;
     private int xPaddle1, xPaddle2, yPaddle1, yPaddle2;
     private Rectangle rPaddle1, rPaddle2, rBall;
-    Timer t;
     private Scorecard score;
-    int paddleSpeed;
     private boolean[] keyArray = new boolean[5];
     private boolean gameOver = true;
-    GameSpeed gs;
 
     Game() {
         gs = new GameSpeed(this);
@@ -108,7 +109,7 @@ public class Game extends JPanel implements ActionListener, KeyListener {
             }
         }
         if (e.getKeyCode() == KeyEvent.VK_R) {
-            if(!gs.isVisible()){
+            if (!gs.isVisible()) {
                 restartGame();
             }
         }
